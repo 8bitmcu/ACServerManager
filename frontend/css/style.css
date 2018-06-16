@@ -162,3 +162,7 @@ table.simple-tbl th {
 .plugin footer {
 	display: none;
 }
+
+.ats-switch span.switch-left {
+	background-color: #d00;
+}

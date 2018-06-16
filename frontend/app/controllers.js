@@ -3,8 +3,8 @@
 angular.module('acServerManager')
 
 	// Server status controller
-	.controller('StatusCtrl', function($scope, $timeout, ProcessService, ServerService) {
-		$scope.alerts = [];
+	.controller('StatusCtrl', function($scope, $state, $timeout, ProcessService, ServerService) {
+		$state.current.data.alerts = [];
 		$scope.logdata = "";
 
 		(function getACServerStatus() {
@@ -79,15 +79,15 @@ angular.module('acServerManager')
 		}
 
 		$scope.closeAlert = function(index) {
-			$scope.alerts.splice(index, 1);
+			$state.current.data.alerts.splice(index, 1);
 		};
 
 		function createAlert(type, msg, autoClose) {
 			var alert = { type: type, msg: msg};
-			$scope.alerts.push(alert);
+			$state.current.data.alerts.push(alert);
 			if (autoClose) {
 				$timeout(function(){
-					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+					$state.current.data.alerts.splice($state.current.data.alerts.indexOf(alert), 1);
 				}, 3000);
 			}
 		}
@@ -117,9 +117,9 @@ angular.module('acServerManager')
 	})
 
 	// Server config controller
-	.controller('ConfigCtrl', function ($scope, $filter, $timeout, distanceFilter, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService, DynamicTrackService) {
+	.controller('ConfigCtrl', function ($scope, $state, $filter, $timeout, distanceFilter, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService, DynamicTrackService) {
 		$scope.sessions = [];
-		$scope.alerts = [];
+		$state.current.data.alerts = [];
 		$scope.weatherSettings = [];
 		var newWeather = {
 			GRAPHICS: '3_clear',
@@ -507,7 +507,7 @@ angular.module('acServerManager')
 		}
 
 		$scope.closeAlert = function(index) {
-			$scope.alerts.splice(index, 1);
+			$state.current.data.alerts.splice(index, 1);
 		};
 
 		function getTime(sunAngle) {
@@ -530,10 +530,10 @@ angular.module('acServerManager')
 
 		function createAlert(type, msg, autoClose) {
 			var alert = { type: type, msg: msg};
-			$scope.alerts.push(alert);
+			$state.current.data.alerts.push(alert);
 			if (autoClose) {
 				$timeout(function(){
-					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+					$state.current.data.alerts.splice($state.current.data.alerts.indexOf(alert), 1);
 				}, 3000);
 			}
 		}
@@ -548,7 +548,7 @@ angular.module('acServerManager')
 		}
 	})
 	.controller('EntryListCtrl', function($scope, $timeout, $filter, ServerService, CarService, EntryListService, DriverService) {
-		$scope.alerts = [];
+		$state.current.data.alerts = [];
 		$scope.entryList = [];
 		$scope.drivers =[];
 		$scope.amount = 1;
@@ -697,10 +697,10 @@ angular.module('acServerManager')
 
 		function createAlert(type, msg, autoClose) {
 			var alert = { type: type, msg: msg};
-			$scope.alerts.push(alert);
+			$state.current.data.alerts.push(alert);
 			if (autoClose) {
 				$timeout(function(){
-					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+					$state.current.data.alerts.splice($state.current.data.alerts.indexOf(alert), 1);
 				}, 3000);
 			}
 		}

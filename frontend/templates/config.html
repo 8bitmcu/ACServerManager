@@ -36,7 +36,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Max Clients</label>
-					<input class="form-control" name="max_clients" ng-model="server.MAX_CLIENTS" required/>
+					<input class="form-control" type="number" min="1" max="256" name="max_clients" ng-model="server.MAX_CLIENTS" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
@@ -69,7 +69,7 @@
 			<div class="col-sm-2">
 				<div class="form-group show-errors">
 					<label>Result Screen Time</label>
-					<input class="form-control" name="result_screen_time" ng-model="server.RESULT_SCREEN_TIME" required>
+					<input class="form-control" type="number" min="10" max="65535" name="result_screen_time" ng-model="server.RESULT_SCREEN_TIME" required>
 				 </div>
 			</div>
 		</div>
@@ -83,13 +83,13 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Session Vote Quorum</label>
-					<input class="form-control" name="voting_quorum" ng-model="server.VOTING_QUORUM" required/>
+					<input class="form-control" type="number" min="0" max="101" name="voting_quorum" ng-model="server.VOTING_QUORUM" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Voting Duration</label>
-					<input class="form-control" name="vote_duration" ng-model="server.VOTE_DURATION" required/>
+					<input class="form-control" type="number" min="10" max="30" name="vote_duration" ng-model="server.VOTE_DURATION" required/>
 				</div>
 			</div>
 			<!-- todo: whats this?
@@ -106,13 +106,13 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Kick Vote Quorum</label>
-					<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required/>
+					<input class="form-control" type="number" min="0" max="101" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Max Contacts Per KM</label>
-					<input class="form-control" name="max_contacts_per_km" ng-model="server.MAX_CONTACTS_PER_KM" required>
+					<input class="form-control" type="number" min="-1" max="128" name="max_contacts_per_km" ng-model="server.MAX_CONTACTS_PER_KM" required>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
@@ -136,25 +136,25 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>UDP Port</label>
-					<input class="form-control" name="udp_port" ng-model="server.UDP_PORT" required/>
+					<input class="form-control" type="number" min="1" max="65535" name="udp_port" ng-model="server.UDP_PORT" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>TCP Port</label>
-					<input class="form-control" name="tcp_port" ng-model="server.TCP_PORT" required/>
+					<input class="form-control" type="number" min="1" max="65535" name="tcp_port" ng-model="server.TCP_PORT" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>HTTP Port</label>
-					<input class="form-control" name="http_port" ng-model="server.HTTP_PORT" required/>
+					<input class="form-control" type="number" min="1" max="65535" name="http_port" ng-model="server.HTTP_PORT" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Packet (hz)</label>
-					<input class="form-control" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required/>
+					<input class="form-control" type="number" min="10" max="35" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required/>
 				</div>
 			</div>
 		</div>
@@ -176,19 +176,19 @@
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>UDP Local Port</label>
-					<input class="form-control" type="number" min="0" string-to-number name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT"/>
+					<input class="form-control" type="number" min="0" max="65535" string-to-number name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
-					<label>UDP Address</label>
+					<label>IP Address</label>
 					<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Auth Address</label>
-					<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS"/>
+					<input class="form-control" type="number" min="0" max="65535" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS"/>
 				</div>
 			</div>
 		</div>

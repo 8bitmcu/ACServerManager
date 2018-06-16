@@ -1,86 +1,92 @@
+<form ng-submit="submit()" name="form" data-toggle="validator">
 
-<fieldset class="top10">
-	<legend>Track</legend>
+	<fieldset class="top10">
+		<legend>Track</legend>
 
-	<!-- todo: whats this? -->
-	<div class="row" ng-show="configs">
-		<div class="col-sm-12">
-			<div class="form-group">
-				<label>Configuration</label>
-				<select class="form-control" ng-model="server.CONFIG_TRACK" ng-options="config as config for config in configs"></select>
+		<!-- todo: whats this? -->
+		<div class="row" ng-show="configs">
+			<div class="col-sm-12">
+				<div class="form-group">
+					<label>Configuration</label>
+					<select class="form-control" ng-model="server.CONFIG_TRACK" ng-options="config as config for config in configs"></select>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- TRACK SELECTION -->
-	<div class="row">
+		<!-- TRACK SELECTION -->
+		<div class="row">
+			<div class="col-sm-3">
+				<img ng-src="{{trackImage}}" style="max-width: 100%" />
+			</div>
+			<div class="col-sm-3 col-sm-offset-1">
+				<div class="form-group">
+					<label>Tracks</label>
+					<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+				</div>
+				<div ng-show="trackDetails">
+					<table class="simple-tbl">
+						<tr>
+							<th>Description:</th>
+							<td>{{trackDetails.description}}</td>
+						</tr>
+						<tr>
+							<th>Location:</th>
+							<td>{{trackDetails.city}}, {{trackDetails.country}}</td>
+						</tr>
+						<tr>
+							<th>Length:</th>
+							<td>{{trackDetails.length|distance}}</td>
+						</tr>
+						<tr>
+							<th>Pit Boxes:</th>
+							<td>{{trackDetails.pitboxes}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-3 col-sm-offset-1 track-outline">
+				<img ng-src="{{trackOutline}}" style="max-width: 100%" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="top10">
+		<legend>Event &amp; Conditions</legend>
 		<div class="col-sm-3">
-			<img ng-src="{{trackImage}}" style="max-width: 100%" />
+			<div class="form-group">
+				<label>Event Type</label>
+				<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+			</div>
 		</div>
 		<div class="col-sm-3 col-sm-offset-1">
 			<div class="form-group">
-				<label>Tracks</label>
+				<label>Difficulty</label>
 				<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
 			</div>
-			<div ng-show="trackDetails">
-				<table class="simple-tbl">
-					<tr>
-						<th>Description:</th>
-						<td>{{trackDetails.description}}</td>
-					</tr>
-					<tr>
-						<th>Location:</th>
-						<td>{{trackDetails.city}}, {{trackDetails.country}}</td>
-					</tr>
-					<tr>
-						<th>Length:</th>
-						<td>{{trackDetails.length|distance}}</td>
-					</tr>
-					<tr>
-						<th>Pit Boxes:</th>
-						<td>{{trackDetails.pitboxes}}</td>
-					</tr>
-				</table>
+		</div>
+		<div class="col-sm-3 col-sm-offset-1">
+			<div class="form-group">
+				<label>Time and Weather</label>
+				<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
 			</div>
 		</div>
-		<div class="col-sm-3 col-sm-offset-1 track-outline">
-			<img ng-src="{{trackOutline}}" style="max-width: 100%" />
-		</div>
-	</div>
-</fieldset>
+	</fieldset>
 
-<fieldset class="top10">
-	<legend>Event &amp; Conditions</legend>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label>Event Type</label>
-			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+	<fieldset class="top10">
+		<legend>Vehicle Class</legend>
+		<div class="col-sm-3">
+			<div class="form-group">
+				<label>Classes</label>
+				<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+			</div>
 		</div>
-	</div>
-	<div class="col-sm-3 col-sm-offset-1">
-		<div class="form-group">
-			<label>Difficulty</label>
-			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
-		</div>
-	</div>
-	<div class="col-sm-3 col-sm-offset-1">
-		<div class="form-group">
-			<label>Time and Weather</label>
-			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
-		</div>
-	</div>
-</fieldset>
 
-<fieldset class="top10">
-	<legend>Vehicle Class</legend>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label>Classes</label>
-			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+	</fieldset>
+
+	<div class="row top30 bottom30">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-danger btn-sm">Save Changes</button>
 		</div>
 	</div>
-	<!-- todo: whats this? -->
-	<div class="row" ng-show="configs">
 
-	</div>
-</fieldset>
+</form>

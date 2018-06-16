@@ -43,13 +43,13 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Base Ambient Temp</label>
-					<input class="form-control" type="number" string-to-number name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" required/>
+					<input class="form-control" type="number" min="0" max="45" string-to-number name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Ambient Variation</label>
-					<input class="form-control" type="number" string-to-number name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" required/>
+					<input class="form-control" type="number" min="-32768" max="32767" string-to-number name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" required/>
 				</div>
 			</div>
 		</div>
@@ -58,13 +58,13 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Base Road Temp</label>
-					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" required/>
+					<input class="form-control" type="number" min="-15" max="15" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Road Variation</label>
-					<input class="form-control" type="number" string-to-number name="road_variation" ng-model="weather.VARIATION_ROAD" required/>
+					<input class="form-control" type="number" min="-32768" max="32767" string-to-number name="road_variation" ng-model="weather.VARIATION_ROAD" required/>
 				</div>
 			</div>
 		</div>
@@ -78,13 +78,15 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Base Wind Speed (min)</label>
-					<input class="form-control" type="number" string-to-number name="base_temperature_ambient" ng-model="" required/>
+					<!-- todo: cant be higher than max, and vice versa -->
+					<input class="form-control" type="number" min="0" max="40" string-to-number name="base_temperature_ambient" ng-model="" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Base Wind Speed (max)</label>
-					<input class="form-control" type="number" string-to-number name="ambient_variation" ng-model="" required/>
+					<!-- todo: cant be lower than min, and vice versa -->
+					<input class="form-control" type="number" min="0" max="40" string-to-number name="ambient_variation" ng-model="" required/>
 				</div>
 			</div>
 		</div>
@@ -93,13 +95,13 @@
 			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Wind Direction</label>
-					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="" required/>
+					<input class="form-control" type="number" min="0" max="359" string-to-number name="base_temperature_road" ng-model="" required/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Wind Direction Variation</label>
-					<input class="form-control" type="number" string-to-number name="road_variation" ng-model="" required/>
+					<input class="form-control" type="number" min="0" max="359" string-to-number name="road_variation" ng-model="" required/>
 				</div>
 			</div>
 		</div>

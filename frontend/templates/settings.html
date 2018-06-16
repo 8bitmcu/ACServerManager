@@ -1,31 +1,79 @@
+<fieldset class="top10">
+	<legend>Display settings</legend>
+
+	<div class="row">
+    <div class="col-sm-2">
+      <label>Dark Theme</label>
+      <div class="checkbox">
+        <label>
+          <toggle-switch class="switch-large" ng-model=""></toggle-switch>
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+      <label>Show logs in Server Status</label>
+      <div class="checkbox">
+        <label>
+          <toggle-switch class="switch-large" ng-model=""></toggle-switch>
+        </label>
+      </div>
+    </div>
+  </div>
+
+</fieldset>
+
+
+<fieldset class="top10">
+	<legend>Display Units</legend>
+
+	<div class="row">
+    <div class="col-sm-2" ng-hide="">
+      <div class="form-group">
+        <label>Distance</label>
+        <select class="form-control" ng-model="">
+          <option value="1">Kilometers</option>
+          <option value="2">Miles</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1" ng-hide="">
+      <div class="form-group">
+        <label>Temperature</label>
+        <select class="form-control" ng-model="">
+          <option value="1">Celcius</option>
+          <option value="2">Farenheit</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1" ng-hide="">
+      <div class="form-group">
+        <label>Time</label>
+        <select class="form-control" ng-model="">
+          <option value="1">24hr format</option>
+          <option value="2">12hr AM/PM</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</fieldset>
+
+
 <pre>
 
-todo:
-- dark theme
--
-
-units:
-- km / miles
-- time: 12hr vs 24hr
-- temps in C/F
-
-
-
 gui todo:
-- set min and max (validations)
-- help overlay for each controls
+- help icons overlay for each controls
 
 
 unknowns:
 [original software]
 - weather claims to be one of random per session, need test
 
-[original fork]
+[original branch]
 - how max client works
 - what sleep time does (in banning / advanced settings)
 
-Missing controls:
-- Settings: Dynamic Track, dropdown
+[this fork]
 - Settings: Pickup locked entry List
 - Session/Weathers: Time of Day multiplier "Multiplier of time of day" (value between 1 and 10)
 
