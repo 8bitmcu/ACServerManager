@@ -15,4 +15,22 @@ angular
       });
     }
   };
+})
+
+.filter('distance', function() {
+  var km = true;
+  return function(input) {
+    var num = parseInt(input || '');
+    var out;
+
+    if(isNaN(num)) {
+      out = '';
+    } else if(km) {
+      out = Math.round(input / 10) / 100 + " KM";
+    } else {
+      out = Math.round(input / 16.09) / 100 + " MI";
+    }
+
+    return out;
+  };
 });
