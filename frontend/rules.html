@@ -171,6 +171,20 @@
 											</label>
 										</div>
 									</div>
+									<div class="col-sm-3 col-sm-offset-1" ng-show="dynamicTrackEnabled">
+										<div class="form-group">
+											<label>Presets</label>
+											<select class="form-control" ng-model="dynamicTrackPreset" ng-change="dynamicTrackPresetChanged()">
+												<option value="-1">Custom</option>
+												<option value="0">Dusty</option>
+												<option value="1">Old</option>
+												<option value="2">Slow</option>
+												<option value="3">Green</option>
+												<option value="4">Fast</option>
+												<option value="5">Optimum</option>
+											</select>
+										</div>
+									</div>
 								</div>
 								
 								<div class="row" ng-show="dynamicTrackEnabled">
