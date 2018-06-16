@@ -129,6 +129,58 @@ angular.module('acServerManager')
 			VARIATION_ROAD: '2'
 		};
 
+		$scope.dynamicTrackPreset = -1;
+		$scope.dynamicTrackPresets = [
+			{
+				LAP_GAIN: 30,
+				RANDOMNESS: 1,
+				SESSION_START: 86,
+				SESSION_TRANSFER: 50
+			},
+			{
+				LAP_GAIN: 50,
+				RANDOMNESS: 3,
+				SESSION_START: 89,
+				SESSION_TRANSFER: 80
+			},
+			{
+				LAP_GAIN: 300,
+				RANDOMNESS: 1,
+				SESSION_START: 96,
+				SESSION_TRANSFER: 80
+			},
+			{
+				LAP_GAIN: 132,
+				RANDOMNESS: 2,
+				SESSION_START: 95,
+				SESSION_TRANSFER: 90
+			},
+			{
+				LAP_GAIN: 700,
+				RANDOMNESS: 2,
+				SESSION_START: 98,
+				SESSION_TRANSFER: 80
+			},
+			{
+				LAP_GAIN: 1,
+				RANDOMNESS: 0,
+				SESSION_START: 100,
+				SESSION_TRANSFER: 100
+			},
+		];
+
+
+		$scope.dynamicTrackPresetChanged = function(data) {
+			// user selected 'custom' (nothing to do)
+			if(this.dynamicTrackPreset == -1) {
+				return;
+			}
+
+			// check selected preset against array
+			$scope.dynamicTrack = this.dynamicTrackPresets[this.dynamicTrackPreset];
+		};
+
+
 		BookService.GetBookingDetails(function (data) {
 			$scope.sessions.push({
 				type: 'Booking',
@@ -234,6 +286,28 @@ angular.module('acServerManager')
 		DynamicTrackService.GetDynamicTrackDetails(function (data) {
 			$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
 			$scope.dynamicTrack = data;
+
+
+			if(!$scope.dynamicTrackEnabled) {
+				return;
+			}
+
+			var found = -1;
+
+			for(var i=0; i < $scope.dynamicTrackPresets.length; i++) {
+				var item = $scope.dynamicTrackPresets[i];
+				if(item.LAP_GAIN == data.LAP_GAIN &&
+					item.RANDOMNESS == data.RANDOMNESS &&
+					item.SESSION_START == data.SESSION_START &&
+					item.SESSION_TRANSFER == data.SESSION_TRANSFER) {
+						found = i;
+						break;
+				}
+			}
+
+			if($scope.dynamicTrackPreset != found) {
+				$scope.dynamicTrackPreset = found;
+			}
 		});
 
 		ServerService.GetServerDetails(function (data) {
