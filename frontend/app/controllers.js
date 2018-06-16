@@ -704,7 +704,7 @@ angular.module('acServerManager')
 
 			var found = -1;
 
-			for(var i=0; i <= $scope.dynamicTrackPresets.length; i++) {
+			for(var i=0; i < $scope.dynamicTrackPresets.length; i++) {
 				var item = $scope.dynamicTrackPresets[i];
 				if(item.LAP_GAIN == data.LAP_GAIN &&
 					item.RANDOMNESS == data.RANDOMNESS &&
