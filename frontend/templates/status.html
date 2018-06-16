@@ -1,0 +1,76 @@
+<form>
+	<fieldset ng-show="serverIp.length">
+		<legend><span style="margin-right: 5em">Server IP:</span>{{serverIp}}</legend>
+	</fieldset>
+
+	
+	<fieldset>
+		<legend>Assetto Corsa Server</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<p class="lead" ng-class="acServerStatus ? 'bg-success' : 'bg-danger'">{{acServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading...'}}</p>
+			</div>
+
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-success btn-sm" ng-show="acServerStatus === 0" ng-click="startACServer()">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+				</button>
+
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="restartACServer()">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
+					</button>
+
+					<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="stopACServer()">
+						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+					</button>
+				</div>
+				<img src="img/ajax-loader.gif" alt="Loading" ng-show="acServerStatus === -1" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="top10" ng-hide="sTrackerServerStatus === -2">
+		<legend>sTracker Server</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<p class="lead" ng-class="sTrackerServerStatus ? 'bg-success' : 'bg-danger'">{{sTrackerServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading...'}}</p>
+			</div>
+
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-success btn-sm" ng-show="sTrackerServerStatus === 0 && acServerStatus === 1" ng-click="startSTrackerServer()">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+				</button>
+
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-danger btn-sm" ng-show="sTrackerServerStatus === 1" ng-click="restartSTrackerServer()">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
+					</button>
+
+					<button type="button" class="btn btn-danger btn-sm" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
+						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+					</button>
+				</div>
+				<img src="img/ajax-loader.gif" alt="Loading" ng-show="sTrackerServerStatus === -1" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="top10" ng-show="acServerStatus === 1">
+		<legend>Server Status</legend>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<p>Current Session: {{serverStatus.session}}</p>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="top10 scroll-pre" ng-show="logdata.length">
+		<legend>Server Logs</legend>
+		<pre> {{logdata}}</pre>
+	</fieldset>
+
+</form>

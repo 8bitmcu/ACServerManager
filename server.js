@@ -8,7 +8,7 @@ var basicAuth = require('basic-auth-connect');
 var jsonfile = require('jsonfile');
 var util = require('util');
 var extend = require('node.extend');
-
+var publicIp = require('public-ip');
 var settings = require('./settings');
 
 var username = settings.username;
@@ -21,6 +21,8 @@ var contentPath = buildContentPath(serverPath);
 var isRunningOnWindows = /^win/.test(process.platform);
 
 var acServerStatus = 0;
+var acServerCurLog = "";
+
 var sTrackerServerStatus = 0;
 var acServerPid;
 var sTrackerServerPid;
@@ -87,7 +89,7 @@ function writeLogFile(filename, message) {
 		fs.appendFile(__dirname + '/logs/' + filename, message + '\r\n', function (err) {});
 	} catch (e) {
 		console.log('Error - ' + e);
-	}	
+	}
 }
 
 function buildSTrackerPath(sTrackerPath) {
@@ -178,7 +180,7 @@ app.post('/api/server', function (req, res) {
 		for (var param in req.body) {
 			config.SERVER[param.toUpperCase()] = req.body[param];
 		}
-		
+
 		saveConfig();
 		res.status(200);
 		res.send('OK');
@@ -625,6 +627,20 @@ app.get('/api/tracks/:track/image', function (req, res) {
 	}
 });
 
+// get track outline
+app.get('/api/tracks/:track/outline', function (req, res) {
+	try {
+		res.status(200);;
+		var image = fs.readFileSync(contentPath + '/tracks/' + req.params.track + '/ui/outline.png');
+		res.contentType('image/jpeg');
+		res.send(image);
+	} catch (e) {
+		console.log('Error: GET/api/tracks/:track/outline - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
 // get track config
 app.get('/api/tracks/:track/:config', function (req, res) {
 	try {
@@ -652,6 +668,20 @@ app.get('/api/tracks/:track/:config/image', function (req, res) {
 	}
 });
 
+// get track outline image
+app.get('/api/tracks/:track/:config/outline', function (req, res) {
+	try {
+		res.status(200);;
+		var image = fs.readFileSync(contentPath + '/tracks/' + req.params.track + '/ui/' + req.params.config + '/outline.png');
+		res.contentType('image/jpeg');
+		res.send(image);
+	} catch (e) {
+		console.log('Error: GET/api/tracks/:track/:config/image - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
 // get cars available on server
 app.get('/api/cars', function (req, res) {
 	try {
@@ -665,6 +695,29 @@ app.get('/api/cars', function (req, res) {
 	}
 });
 
+// get car specs and data
+app.get('/api/cars/:car/specs', function (req, res) {
+	try {
+		var data = fs.readFileSync(contentPath + '/cars/' + req.params.car + '/ui/ui_car.json');
+
+		// some json can't be parsed properly because of special chars
+		var dataString = data.toString().replace(/[^a-zA-Z0-9'":{} ,.\-\[\]\/\\]/g, '').replace(/br\//g, ' ');
+
+		var json = JSON.parse(dataString);
+
+		// append data to json maybe?
+
+		res.contentType('data/json');
+		res.send(json);
+	} catch (e) {
+		console.log('Error: GET/api/cars - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
+
+// todo: merge with above fn
 // get car skin
 app.get('/api/cars/:car', function (req, res) {
 	try {
@@ -680,6 +733,20 @@ app.get('/api/cars/:car', function (req, res) {
 		res.send({ skins: skins });
 	} catch (e) {
 		console.log('Error: GET/api/cars/:car - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
+// get car skin image
+app.get('/api/cars/:car/skinimage/:id', function (req, res) {
+	try {
+		res.status(200);
+		var image = fs.readFileSync(contentPath + '/cars/' + req.params.car + '/skins/' + req.params.id + '/preview.jpg');
+		res.contentType('image/jpeg');
+		res.send(image);
+	} catch (e) {
+		console.log('Error: GET/api/cars/:car/skinimage/:id - ' + e);
 		res.status(500);
 		res.send('Application error');
 	}
@@ -845,10 +912,21 @@ app.get('/api/tyres', function (req, res) {
 });
 
 // get acserver status
+var publicip = '';
 app.get('/api/acserver/status', function (req, res) {
 	try {
-		res.status(200);
-		res.send({ status: acServerStatus });
+		if(publicip == '') {
+			publicIp.v4().then(ip => {
+				publicip = ip;
+			}).finally(e => {
+			  res.status(200);
+			  res.send({ status: acServerStatus, ip: publicip });
+			});
+		} else {
+			res.status(200);
+			res.send({ status: acServerStatus, ip: publicip });
+		}
+
 	} catch (e) {
 		console.log('Error: GET/api/acserver/status - ' + e);
 		res.status(500);
@@ -858,67 +936,82 @@ app.get('/api/acserver/status', function (req, res) {
 
 // start acserver process
 app.post('/api/acserver', function (req, res) {
-	try {
-		console.log("OS is " + process.platform);
-		var acServer = undefined;
-
-		if (isRunningOnWindows) {
-			console.log("Starting Windows Server");
-			acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
-		} else {
-			console.log("Starting Linux Server");
-			acServer = childProcess.spawn('./acServer', { cwd: serverPath });
+	ac: try {
+		if(acServerStatus) {
+			console.log("acServer already running. Nothing to do here");
+			break ac;
 		}
-		acServerPid = acServer.pid;
-		acServerLogName = getDateTimeString() + '_log.txt';
-
-		acServer.stdout.on('data', function (data) {
-			if (acServerStatus === 0) {
-				acServerStatus = -1;
+		fs.exists(serverPath + './acServer', function (exists) {
+			if(!exists) {
+				console.log("acServer binary not found (perhaps serverPath isn't configured properly in settings.json?)")
+				acServerStatus = 0;
+				return;
 			}
+			console.log("OS is " + process.platform);
+			var acServer = undefined;
 
-			var dataString = String(data);
+			acServerCurLog = "";
 
-			if (dataString.indexOf('OK') !== -1) {
-				acServerStatus = 1;
+			if (isRunningOnWindows) {
+				console.log("Starting Windows Server");
+				acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
+			} else {
+				console.log("Starting Linux Server");
+				acServer = childProcess.spawn('./acServer', { cwd: serverPath });
 			}
-			
-		   if (dataString.indexOf('stracker has been restarted') !== -1) {
-				sTrackerServerStatus = 1
-			}
+			acServerPid = acServer.pid;
+			acServerLogName = getDateTimeString() + '_log.txt';
 
-			if (dataString.indexOf('PAGE: /ENTRY') === -1) {
-				//Log to console and file
-				console.log(dataString);
-				writeLogFile('server_' + acServerLogName, getDateTimeString() + ': ' + data);
-
-				//Set current session
-				if (dataString.indexOf('session name') !== -1) {
-					var session = dataString.substr(dataString.indexOf('session name :') + 14);
-					currentSession = session.substr(0, dataString.indexOf('\n')).trim();
+			acServer.stdout.on('data', function (data) {
+				if (acServerStatus === 0) {
+					acServerStatus = -1;
 				}
-			}
 
-		});
-		acServer.stderr.on('data', function (data) {
-			console.log('stderr: ' + data);
-			writeLogFile('error_' + acServerLogName, getDateTimeString() + ': ' + data);
-		});
-		acServer.on('close', function (code) {
-			console.log('closing code: ' + code);
-		});
-		acServer.on('exit', function (code) {
-			console.log('exit code: ' + code);
-			acServerStatus = 0;
+				var dataString = String(data);
+				acServerCurLog += dataString;
+
+				if (dataString.indexOf('OK') !== -1) {
+					acServerStatus = 1;
+				}
+
+				 if (dataString.indexOf('stracker has been restarted') !== -1) {
+					sTrackerServerStatus = 1
+				}
+
+				if (dataString.indexOf('PAGE: /ENTRY') === -1) {
+					//Log to console and file
+					console.log(dataString);
+					writeLogFile('server_' + acServerLogName, getDateTimeString() + ': ' + data);
+
+					//Set current session
+					if (dataString.indexOf('session name') !== -1) {
+						var session = dataString.substr(dataString.indexOf('session name :') + 14);
+						currentSession = session.substr(0, dataString.indexOf('\n')).trim();
+					}
+				}
+
+			});
+			acServer.stderr.on('data', function (data) {
+				console.log('stderr: ' + data);
+				writeLogFile('error_' + acServerLogName, getDateTimeString() + ': ' + data);
+			});
+			acServer.on('close', function (code) {
+				console.log('closing code: ' + code);
+			});
+			acServer.on('exit', function (code) {
+				console.log('exit code: ' + code);
+				acServerStatus = 0;
+			});
 		});
 
-		res.status(200);
-		res.send("OK");
 	} catch (e) {
 		console.log('Error: POST/api/acserver - ' + e);
 		res.status(500);
 		res.send('Application error');
 	}
+
+	res.status(200);
+	res.send("OK");
 });
 
 // post stop ac server
@@ -936,6 +1029,8 @@ app.post('/api/acserver/stop', function (req, res) {
 			acServerPid = undefined;
 			acServerLogName = undefined;
 		}
+
+		acServerStatus = 0;
 
 		res.status(200);
 		res.send("OK");
@@ -963,7 +1058,7 @@ app.post('/api/strackerserver', function (req, res) {
 	try {
 		var sTracker = childProcess.spawn('stracker.exe', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
 		sTrackerServerPid = sTracker.pid;
-		
+
 		if (sTrackerServerStatus == 0) {
 			sTrackerServerStatus = -1;
 		}

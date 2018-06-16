@@ -1,0 +1,372 @@
+<form ng-submit="submit()" name="form" data-toggle="validator">
+
+	<fieldset>
+		<legend>Basic Details</legend>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Server Name</label>
+					<input class="form-control" name="name" ng-model="server.NAME" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label>Server Password</label>
+					<input type="password" class="form-control" ng-model="server.PASSWORD"/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label>Admin Password</label>
+					<input type="password" class="form-control" ng-model="server.ADMIN_PASSWORD"/>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Ports</legend>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Port</label>
+					<input class="form-control" name="udp_port" ng-model="server.UDP_PORT" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>TCP Port</label>
+					<input class="form-control" name="tcp_port" ng-model="server.TCP_PORT" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>HTTP Port</label>
+					<input class="form-control" name="http_port" ng-model="server.HTTP_PORT" required/>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Lobby Options</legend>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Max Clients</label>
+					<input class="form-control" name="max_clients" ng-model="server.MAX_CLIENTS" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Jump Start</label>
+					<select class="form-control" name="start_rule" ng-model="server.START_RULE">
+						<option value="0">Car Locked</option>
+						<option value="1">Teleport to Pit</option>
+						<option value="2">Drive Through</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label>Locked Entry List</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.LOCKED_ENTRY_LIST"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Loop Session</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.LOOP_MODE"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Pickup Mode Enabled</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.PICKUP_MODE_ENABLED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Show on Lobby</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.REGISTER_TO_LOBBY"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<!-- RULES -->
+	<fieldset>
+		<legend>Driver Assists</legend>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>ABS</label>
+					<select class="form-control" ng-model="server.ABS_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions"></select>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>Traction Control</label>
+					<select class="form-control" ng-model="server.TC_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions"></select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label>Allow Auto Clutch</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.AUTOCLUTCH_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Allow Stability Control</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.STABILITY_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Allow Tyre Blankets</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.TYRE_BLANKETS_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Force Virtual Mirror</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.FORCE_VIRTUAL_MIRROR"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Dynamic Track</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="dynamicTrackEnabled"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-show="dynamicTrackEnabled">
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Lap Gain</label>
+					<input class="form-control" name="lap_gain" ng-model="dynamicTrack.LAP_GAIN" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Randomness</label>
+					<input class="form-control" name="randomness" ng-model="dynamicTrack.RANDOMNESS" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Session Start Grip</label>
+					<input class="form-control" name="session_start" ng-model="dynamicTrack.SESSION_START" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Session Transfer</label>
+					<input class="form-control" name="session_transfer" ng-model="dynamicTrack.SESSION_TRANSFER" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Racing Rules</legend>
+
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="form-group">
+					<label>Allowed Tyres Out</label>
+					<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
+						<option value="-1">Disabled</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Damage Multiplier</label>
+					<input class="form-control" name="damage_multiplier" ng-model="server.DAMAGE_MULTIPLIER" required/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Fuel Rate</label>
+					<input class="form-control" name="fuel_rate" ng-model="server.FUEL_RATE" required/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Tyre Wear Rate</label>
+					<input class="form-control" name="tyre_wear_rate" ng-model="server.TYRE_WEAR_RATE" required/>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<label>Race Gas Penalty</label>
+					<select class="form-control" ng-model="server.RACE_GAS_PENALTY_DISABLED">
+						<option value="0">Enabled</option>
+						<option value="1">Disabled</option>
+					</select>
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Max Contacts Per KM</label>
+					<input class="form-control" name="max_contacts_per_km" ng-model="server.MAX_CONTACTS_PER_KM" required>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<!-- ADVANCED -->
+	<fieldset class="top10">
+		<legend>Advanced Rules</legend>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Sleep Time</label>
+					<input class="form-control" name="sleep_time" ng-model="server.SLEEP_TIME" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Voting Quorum</label>
+					<input class="form-control" name="voting_quorum" ng-model="server.VOTING_QUORUM" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Voting Duration</label>
+					<input class="form-control" name="vote_duration" ng-model="server.VOTE_DURATION" required/>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Kick Vote Quorum</label>
+					<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Blacklist Mode</label>
+					<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
+						<option value="0">Kick Player</option>
+						<option value="1">Ban Until Restart</option>
+						<option value="2">Ban and Forget</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Client Send Interval (hz)</label>
+					<input class="form-control" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required/>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Max Ballast (Kg)</label>
+					<input class="form-control" type="number" min="0" string-to-number name="max_ballast" ng-model="server.MAX_BALLAST_KG" required/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group show-errors">
+					<label>Result Screen Time</label>
+					<input class="form-control" name="result_screen_time" ng-model="server.RESULT_SCREEN_TIME" required>
+				 </div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Plugin</legend>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Local Port</label>
+					<input class="form-control" type="number" min="0" string-to-number name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT"/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Address</label>
+					<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS"/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Auth Address</label>
+					<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS"/>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<div class="row top30 bottom30">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-danger btn-sm">Save Changes</button>
+		</div>
+	</div>
+
+</form>

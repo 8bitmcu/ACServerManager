@@ -1,6 +1,6 @@
 module.exports = {
-  serverPath: '../server/',
-  contentPath: '',
+  serverPath: '../../steam/assetto/',
+  contentPath: '../../steam/assetto/content',
   sTrackerPath: '',
   username: '',
   password: '',
