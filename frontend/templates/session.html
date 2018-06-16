@@ -59,17 +59,16 @@
 	</div>
 	<div class="col-sm-3 col-sm-offset-1">
 		<div class="form-group">
+			<label>Difficulty</label>
+			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
+		</div>
+	</div>
+	<div class="col-sm-3 col-sm-offset-1">
+		<div class="form-group">
 			<label>Time and Weather</label>
 			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
 		</div>
 	</div>
-	<!-- todo: eventually, add rules as presets
-	<div class="col-sm-3 col-sm-offset-1">
-		<div class="form-group">
-			<label>Rules</label>
-			<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()"></select>
-		</div>
-	</div>-->
 </fieldset>
 
 <fieldset class="top10">

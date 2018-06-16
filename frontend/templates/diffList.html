@@ -1,0 +1,163 @@
+<form ng-submit="submit()" name="form" data-toggle="validator">
+	<!-- RULES -->
+	<fieldset>
+		<legend>Driver Assists</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label>ABS</label>
+					<select class="form-control" ng-model="server.ABS_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions"></select>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group">
+					<label>Traction Control</label>
+					<select class="form-control" ng-model="server.TC_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions"></select>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<label>Allow Stability Control</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.STABILITY_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label>Allow Auto Clutch</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.AUTOCLUTCH_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<label>Allow Tyre Blankets</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.TYRE_BLANKETS_ALLOWED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<label>Force Virtual Mirror</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.FORCE_VIRTUAL_MIRROR"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Dynamic Track</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="dynamicTrackEnabled"></toggle-switch>
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-show="dynamicTrackEnabled">
+			<div class="col-sm-2">
+				<div class="form-group" show-errors>
+					<label>Lap Gain</label>
+					<input class="form-control" name="lap_gain" ng-model="dynamicTrack.LAP_GAIN" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Randomness</label>
+					<input class="form-control" name="randomness" ng-model="dynamicTrack.RANDOMNESS" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Start Grip</label>
+					<input class="form-control" name="session_start" ng-model="dynamicTrack.SESSION_START" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Session Transfer</label>
+					<input class="form-control" name="session_transfer" ng-model="dynamicTrack.SESSION_TRANSFER" ng-required="dynamicTrackEnabled"/>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Realism</legend>
+
+		<div class="row">
+      <div class="col-sm-2">
+        <div class="form-group" show-errors>
+          <label>Damage Rate</label>
+          <input class="form-control" name="damage_multiplier" ng-model="server.DAMAGE_MULTIPLIER" required/>
+        </div>
+      </div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Tyre Wear Rate</label>
+					<input class="form-control" name="tyre_wear_rate" ng-model="server.TYRE_WEAR_RATE" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Fuel Rate</label>
+					<input class="form-control" name="fuel_rate" ng-model="server.FUEL_RATE" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group">
+					<label>Allowed Tyres Out</label>
+					<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
+						<option value="-1">Disabled</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label>Race Gas Penalty</label>
+				<div class="checkbox">
+					<label>
+						<toggle-switch class="switch-large" ng-model="server.RACE_GAS_PENALTY_DISABLED"></toggle-switch>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Max Ballast (Kg)</label>
+					<input class="form-control" type="number" min="0" string-to-number name="max_ballast" ng-model="server.MAX_BALLAST_KG" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Jump Start</label>
+					<select class="form-control" name="start_rule" ng-model="server.START_RULE">
+						<option value="0">Car Locked</option>
+						<option value="1">Teleport to Pit</option>
+						<option value="2">Drive Through</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+</form>

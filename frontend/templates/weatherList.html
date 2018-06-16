@@ -20,25 +20,12 @@
 
 
 	<fieldset class="top10">
-		<legend>Weather</legend>
+		<legend>Weather and Temperature</legend>
 
 		<div class="row">
-			<div class="col-sm-12">
-				<button type="button" class="btn btn-danger btn-sm" ng-click="addWeather()">Add Weather</button>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-3" ng-repeat="weather in weatherSettings">
-				<div>
-					<h4>
-						{{$index + 1}}
-						<a href="javascript:void(0);" ng-click="removeWeather($index)" title="Remove"><span class="glyphicon glyphicon-remove right" aria-hidden="true"></span></a>
-					</h4>
-				</div>
-
+			<div class="col-sm-2">
 				<div class="form-group">
-					<label>Graphics</label>
+					<label>Weather</label>
 					<select class="form-control" ng-model="weather.GRAPHICS">
 						<option value="3_clear">Clear</option>
 						<option value="7_heavy_clouds">Heavy Clouds</option>
@@ -49,31 +36,75 @@
 						<option value="6_mid_clouds">Mid Clouds</option>
 					</select>
 				</div>
+			</div>
+		</div>
 
+		<div class="row">
+			<div class="col-sm-2">
 				<div class="form-group" show-errors>
 					<label>Base Ambient Temp</label>
 					<input class="form-control" type="number" string-to-number name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" required/>
 				</div>
-
-				<div class="form-group" show-errors>
-					<label>Base Road Temp</label>
-					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" required/>
-				</div>
-
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Ambient Variation</label>
 					<input class="form-control" type="number" string-to-number name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" required/>
 				</div>
+			</div>
+		</div>
 
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group" show-errors>
+					<label>Base Road Temp</label>
+					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group" show-errors>
 					<label>Road Variation</label>
 					<input class="form-control" type="number" string-to-number name="road_variation" ng-model="weather.VARIATION_ROAD" required/>
 				</div>
 			</div>
 		</div>
-
-		<!-- todo: Wind speed and direction -->
 	</fieldset>
+
+
+	<fieldset class="top10">
+		<legend>Wind Speed and Direction</legend>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group" show-errors>
+					<label>Base Wind Speed (min)</label>
+					<input class="form-control" type="number" string-to-number name="base_temperature_ambient" ng-model="" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Base Wind Speed (max)</label>
+					<input class="form-control" type="number" string-to-number name="ambient_variation" ng-model="" required/>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group" show-errors>
+					<label>Wind Direction</label>
+					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="" required/>
+				</div>
+			</div>
+			<div class="col-sm-2 col-sm-offset-1">
+				<div class="form-group" show-errors>
+					<label>Wind Direction Variation</label>
+					<input class="form-control" type="number" string-to-number name="road_variation" ng-model="" required/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
 
 	<div class="row top30 bottom30">
 		<div class="col-sm-6">

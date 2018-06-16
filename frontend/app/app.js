@@ -47,6 +47,12 @@ angular
           data: { title: "Event Types" },
 	        templateUrl: 'templates/eventList.html'
 	    })
+	    .state('diffList', {
+	        url: "/diffList",
+          controller: "ConfigCtrl",
+          data: { title: "Difficulties" },
+	        templateUrl: 'templates/diffList.html'
+	    })
 	    .state('weatherList', {
 	        url: "/weatherList",
           controller: "ConfigCtrl",
