@@ -120,7 +120,7 @@ angular.module('acServerManager')
 	.controller('ConfigCtrl', function ($scope, $state, $filter, $timeout, distanceFilter, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService, DynamicTrackService) {
 		$scope.sessions = [];
 		$state.current.data.alerts = [];
-		$scope.weatherSettings = [];
+		$scope.weather = [];
 		var newWeather = {
 			GRAPHICS: '3_clear',
 			BASE_TEMPERATURE_AMBIENT: '20',
@@ -181,25 +181,6 @@ angular.module('acServerManager')
 		};
 
 
-		BookService.GetBookingDetails(function (data) {
-			$scope.sessions.push({
-				type: 'Booking',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: true,
-				hideCanJoin: true,
-				hideJoinType: true,
-				hideWaitPercentage: true,
-				hideExtraLap: true,
-				hideRaceOverTime: true,
-				hideRacePitWindowStart: true,
-				hideRacePitWindowEnd: true,
-				hideReversedGridRacePositions: true,
-				enabled: data.NAME !== undefined,
-				data: data
-			});
-			$scope.selectedSession = $scope.sessions[0];
-		});
 
 		$scope.assistOptions = [
 			{
@@ -216,63 +197,47 @@ angular.module('acServerManager')
 			}
 		];
 
+
+		BookService.GetBookingDetails(function (data) {
+			// default values fixes issue with validation
+			if(data.TIME === void 0) {
+				data.TIME = 10;
+			}
+
+			$scope.booking = data;
+		});
 		PracticeService.GetPracticeDetails(function (data) {
-			data.IS_OPEN = data.IS_OPEN == 1;
-			$scope.sessions.push({
-				type: 'Practice',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: true,
-				hideCanJoin: false,
-				hideJoinType: true,
-				hideWaitPercentage: true,
-				hideExtraLap: true,
-				hideRaceOverTime: true,
-				hideRacePitWindowStart: true,
-				hideRacePitWindowEnd: true,
-				hideReversedGridRacePositions: true,
-				enabled: data.NAME !== undefined,
-				data: data
-			});
+			// default values fixes issue with validation
+			if(data.TIME === void 0) {
+				data.TIME = 5;
+			}
+
+			$scope.practice = data;
 		});
 
 		QualifyService.GetQualifyDetails(function (data) {
-			data.IS_OPEN = data.IS_OPEN == 1;
-			$scope.sessions.push({
-				type: 'Qualify',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: true,
-				hideCanJoin: false,
-				hideJoinType: true,
-				hideWaitPercentage: false,
-				hideExtraLap: true,
-				hideRaceOverTime: true,
-				hideRacePitWindowStart: true,
-				hideRacePitWindowEnd: true,
-				hideReversedGridRacePositions: true,
-				enabled: data.NAME !== undefined,
-				data: data
-			});
+			// default values fixes issue with validation
+			if(data.TIME === void 0) {
+				data.TIME = 10;
+
+				//todo:
+				data.someproperty = 1;
+			}
+
+			// default values fixes issue with validation
+			$scope.qualify = data;
 		});
 
 		RaceService.GetRaceDetails(function (data) {
-			$scope.sessions.push({
-				type: 'Race',
-				hideTime: false,
-				hideLaps: false,
-				hideWaitTime: false,
-				hideCanJoin: true,
-				hideJoinType: false,
-				hideWaitPercentage: true,
-				hideExtraLap: false,
-				hideRaceOverTime: false,
-				hideRacePitWindowStart: false,
-				hideRacePitWindowEnd: false,
-				hideReversedGridRacePositions: false,
-				enabled: data.NAME !== undefined,
-				data: data
-			});
+			// default values fixes issue with validation
+			if(data.TIME === void 0) {
+				data.TIME = 5;
+			}
+			if(data.LAPS === void 0) {
+				data.LAPS = 3;
+			}
+
+			$scope.race = data;
 		});
 
 		CarService.GetCars(function (data) {
@@ -346,16 +311,8 @@ angular.module('acServerManager')
 		});
 
 		WeatherService.GetWeather(function (data) {
-			$scope.weatherSettings = data;
+			$scope.weather = data[0];
 		});
-
-		$scope.removeWeather = function(index) {
-			$scope.weatherSettings.splice(index, 1);
-		};
-
-		$scope.addWeather = function() {
-			$scope.weatherSettings.push(angular.copy(newWeather));
-		};
 
 		$scope.carsChanged = function() {
 			if ($scope.selectedCars.length == 0) {
@@ -432,6 +389,11 @@ angular.module('acServerManager')
 		}
 
 		$scope.trackChanged = function() {
+			//todo: race condition can occur here, as $scope.tracks isn't always populated when this fires initially
+			if($scope.tracks === void 0) {
+				console.log("$scope.tracks race condition occured. plz fix");
+				return;
+			}
 			var track = findInArray($scope.tracks, {name: $scope.selectedTracks})
 			if (track !== null) {
 				if (track.configs && track.configs.length) {
@@ -508,63 +470,62 @@ angular.module('acServerManager')
 					}
 				});
 
-				var booking = findInArray($scope.sessions, { type: 'Booking' });
-				if (booking !== null) {
-					if(!booking.enabled) {
-						booking.data = {};
-					}
 
-					BookService.SaveBookingDetails(booking.data, function(result) {
-						if (!(result[0] === 'O' && result[1] === 'K')) {
-							saved = false;
-						}
-					});
+				// todo: persist values even when item is disabled
+				if(!$scope.booking.ENABLED) {
+					$scope.booking = {};
 				}
-
-				var practice = findInArray($scope.sessions, { type: 'Practice' });
-				if (practice !== null) {
-					if(!practice.enabled) {
-						practice.data = {};
-					} else {
-						practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+				delete $scope.booking.ENABLED;
+				$scope.booking.NAME = "Booking";
+				BookService.SaveBookingDetails($scope.booking, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
 					}
+				});
 
-					PracticeService.SavePracticeDetails(practice.data, function(result) {
-						if (!(result[0] === 'O' && result[1] === 'K')) {
-							saved = false;
-						}
-					});
+
+				if(!$scope.practice.ENABLED) {
+					$scope.practice = {};
+				} else {
+					$scope.practice.IS_OPEN = $scope.practice.IS_OPEN ? 1 : 0;
 				}
-
-				var qualify = findInArray($scope.sessions, { type: 'Qualify' });
-				if (qualify !== null) {
-					if(!qualify.enabled) {
-						qualify.data = {};
-					} else {
-						qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
+				delete $scope.booking.ENABLED;
+				$scope.booking.NAME = "Practice";
+				PracticeService.SavePracticeDetails($scope.practice, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
 					}
+				});
 
-					QualifyService.SaveQualifyDetails(qualify.data, function(result) {
-						if (!(result[0] === 'O' && result[1] === 'K')) {
-							saved = false;
-						}
-					});
+
+				if(!$scope.qualify.ENABLED) {
+					$scope.qualify = {};
+				} else {
+					$scope.qualify.IS_OPEN = $scope.qualify.IS_OPEN ? 1 : 0;
 				}
-
-				var race = findInArray($scope.sessions, { type: 'Race' });
-				if (race !== null) {
-					if(!race.enabled) {
-						race.data = {};
+				delete $scope.qualify.ENABLED;
+				$scope.qualify.NAME = "Qualify";
+				QualifyService.SaveQualifyDetails($scope.qualify, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
 					}
+				});
 
-					RaceService.SaveRaceDetails(race.data, function(result) {
-						if (!(result[0] === 'O' && result[1] === 'K')) {
-							saved = false;
-						}
-					});
+
+				if(!$scope.race.ENABLED) {
+					$scope.race = {};
 				}
+				delete $scope.qualify.ENABLED;
+				$scope.qualify.NAME = "Race";
+				RaceService.SaveRaceDetails($scope.race, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
 
-				WeatherService.SaveWeather($scope.weatherSettings, function(result) {
+
+
+				WeatherService.SaveWeather([$scope.weather], function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
