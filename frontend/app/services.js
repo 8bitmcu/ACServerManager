@@ -170,9 +170,9 @@ angular.module('acServerManager.services', ['ngResource']).
     }).
 	factory('ProcessService', function($resource, $timeout) {
         return {
-            ACServerStatus: function(callback) {
-                var resource = $resource('/api/acserver/status');
-                var result = resource.get(function() {
+            ACServerStatus: function(logLen, callback) {
+                var resource = $resource('/api/acserver/status/:logLen');
+                var result = resource.get({logLen: logLen}, function() {
                     callback(result);
                 });
             },
@@ -195,7 +195,7 @@ angular.module('acServerManager.services', ['ngResource']).
 						var resource = $resource('/api/acserver');
 						var result = resource.save(function () {
 							callback(result);
-						});                    
+						});
 					}, 500);
                 });
             },

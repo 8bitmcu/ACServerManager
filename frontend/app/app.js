@@ -37,7 +37,7 @@ angular
 	    })
 	    .state('carList', {
 	        url: "/carList",
-          controller: "ConfigCtrl",
+          controller: "EntryListCtrl",
           data: { title: "Vehicle Classes" },
 	        templateUrl: 'templates/carList.html'
 	    })
@@ -56,7 +56,7 @@ angular
 	    .state('weatherList', {
 	        url: "/weatherList",
           controller: "ConfigCtrl",
-          data: { title: "Current Session" },
+          data: { title: "Weather and Time" },
 	        templateUrl: 'templates/weatherList.html'
 	    })
 
@@ -95,8 +95,16 @@ angular
     return out;
   };
 })
-.run(['$rootScope', '$state', '$stateParams',
-  function ($rootScope, $state, $stateParams) {
+.run(['$rootScope', '$state', '$stateParams', '$transitions',
+  function ($rootScope, $state, $stateParams, $transitions) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-}])
+
+    $transitions.onFinish({ }, function(trans) {
+      //todo: reimplement in a less hacky way
+      $('html').removeClass('nav-open');
+      lbd.misc.navbar_menu_visible = 0;
+    });
+
+  }
+])

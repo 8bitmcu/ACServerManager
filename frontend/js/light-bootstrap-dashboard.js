@@ -1,19 +1,19 @@
 /*!
-    
+
  =========================================================
  * Light Bootstrap Dashboard - v1.3.1.0
  =========================================================
- 
+
  * Product Page: http://www.creative-tim.com/product/light-bootstrap-dashboard
  * Copyright 2017 Creative Tim (http://www.creative-tim.com)
  * Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard/blob/master/LICENSE.md)
- 
+
  =========================================================
- 
+
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- 
+
  */
- 
+
 var searchVisible = 0;
 var transparent = true;
 
@@ -79,37 +79,10 @@ lbd = {
     initRightMenu: function(){
          if(!navbar_initialized){
             $navbar = $('nav').find('.navbar-collapse').first().clone(true);
-
             $sidebar = $('.sidebar');
-            sidebar_color = $sidebar.data('color');
 
-            $logo = $sidebar.find('.logo').first();
-            logo_content = $logo[0].outerHTML;
-
-            ul_content = '';
-
-            $navbar.attr('data-color',sidebar_color);
-
-            //add the content from the regular header to the right menu
-            $navbar.children('ul').each(function(){
-                content_buff = $(this).html();
-                ul_content = ul_content + content_buff;
-            });
-
-            // add the content from the sidebar to the right menu
-            content_buff = $sidebar.find('.nav').html();
-            ul_content = ul_content + content_buff;
-
-
-            ul_content = '<div class="sidebar-wrapper">' +
-                            '<ul class="nav navbar-nav">' +
-                                ul_content +
-                            '</ul>' +
-                          '</div>';
-
-            navbar_content = logo_content + ul_content;
-
-            $navbar.html(navbar_content);
+            $navbar.attr('data-color', $sidebar.data('color'));
+            $navbar.html($('.sidebar-wrapper')[0].outerHTML);
 
             $('body').append($navbar);
 

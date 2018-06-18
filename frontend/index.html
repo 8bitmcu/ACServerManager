@@ -111,7 +111,17 @@
 			<div class="main-panel" ng-class="$state.current.name == 'plugin' ? 'plugin' : ''">
 				<nav class="navbar navbar-default navbar-fixed">
 					<div class="container-fluid">
-						<span class="navbar-brand">{{$state.current.data.title}}</span>
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<span class="navbar-brand">{{$state.current.data.title}}</span>
+						</div>
+						<div class="collapse navbar-collapse">
+						</div>
 					</div>
 				</nav>
 

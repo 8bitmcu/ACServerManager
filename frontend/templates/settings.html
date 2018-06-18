@@ -1,68 +1,12 @@
-<fieldset class="top10">
-	<legend>Display settings</legend>
-
-	<div class="row">
-    <div class="col-sm-2">
-      <label>Dark Theme</label>
-      <div class="checkbox">
-        <label>
-          <toggle-switch class="switch-large" ng-model=""></toggle-switch>
-        </label>
-      </div>
-    </div>
-    <div class="col-sm-2 col-sm-offset-1">
-      <label>Show logs in Server Status</label>
-      <div class="checkbox">
-        <label>
-          <toggle-switch class="switch-large" ng-model=""></toggle-switch>
-        </label>
-      </div>
-    </div>
-  </div>
-
-</fieldset>
-
-
-<fieldset class="top10">
-	<legend>Display Units</legend>
-
-	<div class="row">
-    <div class="col-sm-2" ng-hide="">
-      <div class="form-group">
-        <label>Distance</label>
-        <select class="form-control" ng-model="">
-          <option value="1">Kilometers</option>
-          <option value="2">Miles</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-sm-2 col-sm-offset-1" ng-hide="">
-      <div class="form-group">
-        <label>Temperature</label>
-        <select class="form-control" ng-model="">
-          <option value="1">Celcius</option>
-          <option value="2">Farenheit</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-sm-2 col-sm-offset-1" ng-hide="">
-      <div class="form-group">
-        <label>Time</label>
-        <select class="form-control" ng-model="">
-          <option value="1">24hr format</option>
-          <option value="2">12hr AM/PM</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-</fieldset>
 
 
 <pre>
 
 gui todo:
 - help icons overlay for each controls
+
+bugs:
+- switching 'booking' from on to off switches 'qualify' to off after post back
 
 
 unknowns:
@@ -78,3 +22,64 @@ unknowns:
 - Session/Weathers: Time of Day multiplier "Multiplier of time of day" (value between 1 and 10)
 
 </pre>
+
+
+<fieldset>
+	<legend>Display settings</legend>
+
+	<div class="row">
+    <div class="col-sm-2">
+      <label>Dark Theme</label>
+      <div class="checkbox">
+        <label>
+          <toggle-switch class="switch-large" ng-model="appsettings.darktheme"></toggle-switch>
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+      <label>Show logs in Server Status</label>
+      <div class="checkbox">
+        <label>
+          <toggle-switch class="switch-large" ng-model="appsettings.showlogs"></toggle-switch>
+        </label>
+      </div>
+    </div>
+  </div>
+
+</fieldset>
+
+
+<fieldset>
+	<legend>Display Units</legend>
+
+	<div class="row">
+    <div class="col-sm-2">
+      <div class="form-group">
+        <label>Distance</label>
+        <select class="form-control" ng-model="appsettings.units.distance">
+          <option value="1">Kilometers</option>
+          <option value="2">Miles</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+      <div class="form-group">
+        <label>Temperature</label>
+        <select class="form-control" ng-model="appsettings.units.temperature">
+          <option value="1">Celcius</option>
+          <option value="2">Farenheit</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+      <div class="form-group">
+        <label>Time</label>
+        <select class="form-control" ng-model="appsettings.units.time">
+          <option value="1">24hr format</option>
+          <option value="2">12hr AM/PM</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</fieldset>

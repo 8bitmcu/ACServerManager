@@ -913,18 +913,26 @@ app.get('/api/tyres', function (req, res) {
 
 // get acserver status
 var publicip = '';
-app.get('/api/acserver/status', function (req, res) {
+app.get('/api/acserver/status/:logLen', function (req, res) {
+
+	var logLen = parseInt(req.params.logLen)
+
+	// 'slow connection' testing
+	//var log = acServerCurLog.slice(logLen, logLen+100);
+
+	var log = acServerCurLog.slice(logLen);
+
 	try {
 		if(publicip == '') {
 			publicIp.v4().then(ip => {
 				publicip = ip;
 			}).finally(e => {
 			  res.status(200);
-			  res.send({ status: acServerStatus, ip: publicip });
+			  res.send({ status: acServerStatus, ip: publicip, log: log });
 			});
 		} else {
 			res.status(200);
-			res.send({ status: acServerStatus, ip: publicip });
+			res.send({ status: acServerStatus, ip: publicip, log: log });
 		}
 
 	} catch (e) {
