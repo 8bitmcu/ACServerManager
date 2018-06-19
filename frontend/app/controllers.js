@@ -413,6 +413,7 @@ angular.module('acServerManager')
 				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
 				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
 
+
 				if($scope.server.RACE_GAS_PENALTY_DISABLED != undefined) {
 					data.RACE_GAS_PENALTY_DISABLED = $scope.server.RACE_GAS_PENALTY_DISABLED ? 1 : 0;
 				}
@@ -778,10 +779,12 @@ angular.module('acServerManager')
 				return;
 			}
 
+			// todo: figure out why this blows on mods
+/*
 			if (typeof $scope.tyres.length === 'undefined' || !$scope.tyres.length){
 				data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
 			}
-
+*/
 			for(var i=1; i <= $scope.amount; i++) {
 				var entry = angular.copy($scope.newEntry);
 				if ($scope.random) {
@@ -807,6 +810,15 @@ angular.module('acServerManager')
 			angular.forEach($scope.entryList, function(value) {
 				value.SPECTATOR_MODE = value.SPECTATOR_MODE ? 1 : 0;
 				data['CAR_' + $scope.entryList.indexOf(value)] = value;
+			});
+
+
+			var cars = {};
+			cars.CARS = $scope.selectedCars.join(';');
+			ServerService.SaveServerDetails(cars, function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					saved = false;
+				}
 			});
 
 			EntryListService.SaveEntryList(data, function(result) {
