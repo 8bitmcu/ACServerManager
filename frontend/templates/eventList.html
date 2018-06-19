@@ -15,7 +15,7 @@
 			<div class="col-sm-2 col-sm-offset-1" ng-show="booking.ENABLED">
 				<div class="form-group">
 					<label>Booking Time</label>
-					<input class="form-control" string-to-number type="number" min="1" max="65535" name="booking_time" ng-model="booking.TIME"/>
+					<input class="form-control" type="number" min="1" max="65535" name="booking_time" ng-model="booking.TIME"/>
 				</div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 			<div class="col-sm-2 col-sm-offset-1" ng-show="practice.ENABLED">
 				<div class="form-group">
 					<label>Practice Time</label>
-					<input class="form-control" string-to-number type="number" min="1" max="65535" name="practice_time" ng-model="practice.TIME" />
+					<input class="form-control" type="number" min="1" max="65535" name="practice_time" ng-model="practice.TIME" />
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1" ng-show="practice.ENABLED">
@@ -69,7 +69,7 @@
 			<div class="col-sm-2 col-sm-offset-1" ng-show="qualify.ENABLED">
 				<div class="form-group">
 					<label>Qualify Time</label>
-					<input class="form-control" string-to-number type="number" min="1" max="65535" name="qualify_time" ng-model="qualify.TIME"/>
+					<input class="form-control" type="number" min="1" max="65535" name="qualify_time" ng-model="qualify.TIME"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1" ng-show="qualify.ENABLED">
@@ -83,7 +83,7 @@
 			<div class="col-sm-2 col-sm-offset-1" ng-show="qualify.ENABLED">
 				<div class="form-group">
 					<label>Wait Percentage</label>
-					<input class="form-control" string-to-number type="number" min="1" max="65535" name="qualify_wait" ng-model="server.QUALIFY_MAX_WAIT_PERC"/>
+					<input class="form-control" type="number" min="1" max="65535" name="qualify_wait" ng-model="server.QUALIFY_MAX_WAIT_PERC"/>
 				</div>
 			</div>
 		</div>
@@ -106,7 +106,7 @@
 			<div class="col-sm-2 col-sm-offset-1" ng-show="race.ENABLED">
 				<div class="form-group">
 					<label>Laps</label>
-					<input class="form-control" string-to-number type="number" min="0" max="65535" name="race_laps" ng-model="race.LAPS"/>
+					<input class="form-control" type="number" min="0" max="65535" name="race_laps" ng-model="race.LAPS"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1" ng-show="race.ENABLED">
@@ -125,19 +125,19 @@
 			<div class="col-sm-2" ng-hide="">
 				<div class="form-group">
 					<label>Wait Time</label>
-					<input class="form-control" string-to-number type="number" min="20" max="65535" name="race_wait_time" ng-model="race.WAIT_TIME"/>
+					<input class="form-control" type="number" min="20" max="65535" name="race_wait_time" ng-model="race.WAIT_TIME"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Race Time</label>
-					<input class="form-control" string-to-number type="number" min="1" max="65535" name="race_time" ng-model="race.TIME"/>
+					<input class="form-control" type="number" min="1" max="65535" name="race_time" ng-model="race.TIME"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Race Over Time</label>
-					<input class="form-control" string-to-number type="number" min="30" max="65535" name="race_over_time" ng-model="server.RACE_OVER_TIME"/>
+					<input class="form-control" type="number" min="30" max="65535" name="race_over_time" ng-model="server.RACE_OVER_TIME"/>
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
@@ -156,19 +156,19 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label>Reversed Grid</label>
-					<input class="form-control" string-to-number type="number" min="-1" max="32767" name="reversed_grid_race_positions" ng-model="server.REVERSED_GRID_RACE_POSITIONS">
+					<input class="form-control" type="number" min="-1" max="32767" name="reversed_grid_race_positions" ng-model="server.REVERSED_GRID_RACE_POSITIONS">
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Race Pit Window Start</label>
-					<input class="form-control" string-to-number type="number" min="0" max="65535" name="race_pit_window_start" ng-model="server.RACE_PIT_WINDOW_START">
+					<input class="form-control" type="number" min="0" max="65535" name="race_pit_window_start" ng-model="server.RACE_PIT_WINDOW_START">
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Race Pit Window End</label>
-					<input class="form-control" string-to-number type="number" min="0" max="65535" name="race_pit_window_end" ng-model="server.RACE_PIT_WINDOW_END">
+					<input class="form-control" type="number" min="0" max="65535" name="race_pit_window_end" ng-model="server.RACE_PIT_WINDOW_END">
 				</div>
 			</div>
 		</div>

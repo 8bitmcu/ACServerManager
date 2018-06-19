@@ -12,11 +12,12 @@ angular.module('acServerManager')
 				$scope.acServerStatus = data.status;
 				$scope.serverIp = data.ip;
 				$scope.logdata += data.log;
+				$scope.pid = data.pid;
 
 				// scroll pre to bottom if it's within about ~50-75px of the bottom already
 				// todo: re-implement in a non-hacky way
 				var $pre = $('pre');
-				if(data.log.length > 0 && $pre.height() + $pre.scrollTop() > $pre[0].scrollHeight - 100) {
+				if($pre.length && data.log.length > 0 && $pre.height() + $pre.scrollTop() > $pre[0].scrollHeight - 100) {
 					setTimeout(function() {
 						$pre.scrollTop($pre[0].scrollHeight);
 					}, 10);
@@ -50,6 +51,9 @@ angular.module('acServerManager')
 		$scope.stopACServer = function() {
 			$scope.stopSTrackerServer();
 			ProcessService.StopACServer(function(result) {
+				$scope.acServerStatus = 0;
+				$scope.logdata = "";
+				$scope.pid = 0;
 				if (!(result[0] === 'O' && result[1] === 'K')) {
 					createAlert('warning', 'Failed to stop AC server', true)
 				}
@@ -58,6 +62,9 @@ angular.module('acServerManager')
 
 		$scope.restartACServer = function() {
 			ProcessService.RestartACServer(function(result) {
+				$scope.acServerStatus = 0;
+				$scope.logdata = "";
+				$scope.pid = 0;
 				if (!(result[0] === 'O' && result[1] === 'K')) {
 					createAlert('warning', 'Failed to restart AC server', true)
 				}
@@ -209,43 +216,33 @@ angular.module('acServerManager')
 
 
 		BookService.GetBookingDetails(function (data) {
-			// default values fixes issue with validation
-			if(data.TIME === void 0) {
-				data.TIME = 10;
-			}
+			data.ENABLED = (data.NAME !== void 0);
+			data.TIME = parseInt(data.TIME);
 
 			$scope.booking = data;
 		});
 		PracticeService.GetPracticeDetails(function (data) {
-			// default values fixes issue with validation
-			if(data.TIME === void 0) {
-				data.TIME = 5;
-			}
+			data.ENABLED = (data.NAME !== void 0);
+			data.TIME = parseInt(data.TIME);
+			data.IS_OPEN = data.IS_OPEN == "1";
 
 			$scope.practice = data;
 		});
 
 		QualifyService.GetQualifyDetails(function (data) {
-			// default values fixes issue with validation
-			if(data.TIME === void 0) {
-				data.TIME = 10;
+			data.ENABLED = (data.NAME !== void 0);
+			data.TIME = parseInt(data.TIME);
+			data.IS_OPEN = data.IS_OPEN == "1";
+			data.QUALIFY_MAX_WAIT_PERC = parseInt(data.QUALIFY_MAX_WAIT_PERC);
 
-				//todo:
-				data.someproperty = 1;
-			}
-
-			// default values fixes issue with validation
 			$scope.qualify = data;
 		});
 
 		RaceService.GetRaceDetails(function (data) {
-			// default values fixes issue with validation
-			if(data.TIME === void 0) {
-				data.TIME = 5;
-			}
-			if(data.LAPS === void 0) {
-				data.LAPS = 3;
-			}
+			data.ENABLED = (data.NAME !== void 0);
+			data.LAPS = parseInt(data.LAPS);
+			data.WAIT_TIME = parseInt(data.WAIT_TIME);
+			data.TIME = parseInt(data.TIME);
 
 			$scope.race = data;
 		});
@@ -254,12 +251,16 @@ angular.module('acServerManager')
 			$scope.cars = data;
 		});
 
-		TrackService.GetTracks(function (data) {
-			$scope.tracks = data;
-		});
+
 
 		DynamicTrackService.GetDynamicTrackDetails(function (data) {
 			$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
+
+			data.LAP_GAIN = parseInt(data.LAP_GAIN);
+			data.RANDOMNESS = parseInt(data.RANDOMNESS);
+			data.SESSION_START = parseInt(data.SESSION_START);
+			data.SESSION_TRANSFER = parseInt(data.SESSION_TRANSFER);
+
 			$scope.dynamicTrack = data;
 
 
@@ -286,14 +287,34 @@ angular.module('acServerManager')
 		});
 
 		ServerService.GetServerDetails(function (data) {
+
+			data.DAMAGE_MULTIPLIER = parseInt(data.DAMAGE_MULTIPLIER);
+			data.TYRE_WEAR_RATE = parseInt(data.TYRE_WEAR_RATE);
+			data.FUEL_RATE = parseInt(data.FUEL_RATE);
+			data.MAX_BALLAST_KG = parseInt(data.MAX_BALLAST_KG);
+
+			data.RACE_OVER_TIME = parseInt(data.RACE_OVER_TIME);
+			data.REVERSED_GRID_RACE_POSITIONS = parseInt(data.REVERSED_GRID_RACE_POSITIONS);
+			data.RACE_PIT_WINDOW_START = parseInt(data.RACE_PIT_WINDOW_START);
+			data.RACE_PIT_WINDOW_END = parseInt(data.RACE_PIT_WINDOW_END);
+
+			data.MAX_CLIENTS = parseInt(data.MAX_CLIENTS);
+			data.RESULT_SCREEN_TIME = parseInt(data.RESULT_SCREEN_TIME);
+			data.VOTING_QUORUM = parseInt(data.VOTING_QUORUM);
+			data.VOTE_DURATION = parseInt(data.VOTE_DURATION);
+			data.KICK_QUORUM = parseInt(data.KICK_QUORUM);
+			data.MAX_CONTACTS_PER_KM = parseInt(data.MAX_CONTACTS_PER_KM);
+			data.UDP_PORT = parseInt(data.UDP_PORT);
+			data.TCP_PORT = parseInt(data.TCP_PORT);
+			data.HTTP_PORT = parseInt(data.HTTP_PORT);
+			data.CLIENT_SEND_INTERVAL_HZ = parseInt(data.CLIENT_SEND_INTERVAL_HZ);
+			data.UDP_PLUGIN_LOCAL_PORT = parseInt(data.UDP_PLUGIN_LOCAL_PORT);
+			data.AUTH_PLUGIN_ADDRESS = parseInt(data.AUTH_PLUGIN_ADDRESS);
+
 			$scope.server = data;
 
-			if (!$scope.server.MAX_BALLAST_KG) {
-				$scope.server.MAX_BALLAST_KG = 100;
-			}
-
 			try {
-				$scope.selectedTracks = data.TRACK; //TODO: Multi-track
+				$scope.selectedTracks = data.TRACK;
 
 				data.LOOP_MODE = data.LOOP_MODE == 1;
 				data.LOCKED_ENTRY_LIST = data.LOCKED_ENTRY_LIST == 1;
@@ -314,21 +335,30 @@ angular.module('acServerManager')
 				console.log('Error - ' + e);
 			}
 
-			$scope.trackChanged();
+			TrackService.GetTracks(function (data) {
+				$scope.tracks = data;
+				$scope.trackChanged();
+			});
 		});
 
 		WeatherService.GetWeather(function (data) {
-			$scope.weather = data[0];
+			data = data[0];
+			data.BASE_TEMPERATURE_AMBIENT = parseInt(data.BASE_TEMPERATURE_AMBIENT);
+			data.VARIATION_AMBIENT = parseInt(data.VARIATION_AMBIENT);
+			data.BASE_TEMPERATURE_ROAD = parseInt(data.BASE_TEMPERATURE_ROAD);
+			data.VARIATION_ROAD = parseInt(data.VARIATION_ROAD);
+
+			data.WIND_BASE_SPEED_MIN = parseInt(data.WIND_BASE_SPEED_MIN);
+			data.WIND_BASE_SPEED_MAX = parseInt(data.WIND_BASE_SPEED_MAX);
+			data.WIND_BASE_DIRECTION = parseInt(data.WIND_BASE_DIRECTION);
+			data.WIND_VARIATION_DIRECTION = parseInt(data.WIND_VARIATION_DIRECTION);
+
+			$scope.weather = data;
 		});
 
 
 
 		$scope.trackChanged = function() {
-			//todo: race condition can occur here, as $scope.tracks isn't always populated when this fires initially
-			if($scope.tracks === void 0) {
-				console.log("$scope.tracks race condition occured. plz fix");
-				return;
-			}
 			var track = findInArray($scope.tracks, {name: $scope.selectedTracks})
 			if (track !== null) {
 				if (track.configs && track.configs.length) {
@@ -364,6 +394,11 @@ angular.module('acServerManager')
 			}
 
 			try {
+
+				var isValidNum = function(input) {
+					return !isNaN(parseInt(input));
+				}
+
 				var data = angular.copy($scope.server);
 
 				data.LOCKED_ENTRY_LIST = $scope.server.LOCKED_ENTRY_LIST ? 1 : 0;
@@ -377,6 +412,35 @@ angular.module('acServerManager')
 				data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
 				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
 				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
+
+				if($scope.server.RACE_GAS_PENALTY_DISABLED != undefined) {
+					data.RACE_GAS_PENALTY_DISABLED = $scope.server.RACE_GAS_PENALTY_DISABLED ? 1 : 0;
+				}
+
+				if(!isValidNum(data.MAX_BALLAST_KG)) {
+					delete data.MAX_BALLAST_KG;
+				}
+				if(!isValidNum(data.RACE_OVER_TIME)) {
+					delete data.RACE_OVER_TIME;
+				}
+				if(!isValidNum(data.REVERSED_GRID_RACE_POSITIONS)) {
+					delete data.REVERSED_GRID_RACE_POSITIONS;
+				}
+				if(!isValidNum(data.RACE_PIT_WINDOW_START)) {
+					delete data.RACE_PIT_WINDOW_START;
+				}
+				if(!isValidNum(data.RACE_PIT_WINDOW_END)) {
+					delete data.RACE_PIT_WINDOW_END;
+				}
+				if(!isValidNum(data.AUTH_PLUGIN_ADDRESS)) {
+					delete data.AUTH_PLUGIN_ADDRESS;
+				}
+				if(!isValidNum(data.RESULT_SCREEN_TIME)) {
+					delete data.RESULT_SCREEN_TIME;
+				}
+				if(!isValidNum(data.MAX_CONTACTS_PER_KM)) {
+					delete data.MAX_CONTACTS_PER_KM;
+				}
 
 				if(!$scope.dynamicTrackEnabled) {
 					$scope.dynamicTrack = {};
@@ -401,61 +465,96 @@ angular.module('acServerManager')
 				});
 
 
-				// todo: persist values even when item is disabled
-				if(!$scope.booking.ENABLED) {
-					$scope.booking = {};
+				var booking = angular.copy($scope.booking);
+				if(!booking.ENABLED) {
+					booking = {};
 				}
-				delete $scope.booking.ENABLED;
-				$scope.booking.NAME = "Booking";
-				BookService.SaveBookingDetails($scope.booking, function(result) {
+				else {
+					booking.NAME = "Booking";
+				}
+				delete booking.ENABLED;
+				BookService.SaveBookingDetails(booking, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
 
-
-				if(!$scope.practice.ENABLED) {
-					$scope.practice = {};
+				var practice = angular.copy($scope.practice);
+				if(!practice.ENABLED) {
+					practice = {};
 				} else {
-					$scope.practice.IS_OPEN = $scope.practice.IS_OPEN ? 1 : 0;
+					practice.IS_OPEN = practice.IS_OPEN ? 1 : 0;
+					practice.NAME = "Practice";
 				}
-				delete $scope.booking.ENABLED;
-				$scope.booking.NAME = "Practice";
-				PracticeService.SavePracticeDetails($scope.practice, function(result) {
+				delete practice.ENABLED;
+				PracticeService.SavePracticeDetails(practice, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
 
-
-				if(!$scope.qualify.ENABLED) {
-					$scope.qualify = {};
+				var qualify = angular.copy($scope.qualify);
+				if(!qualify.ENABLED) {
+					qualify = {};
 				} else {
-					$scope.qualify.IS_OPEN = $scope.qualify.IS_OPEN ? 1 : 0;
+					qualify.IS_OPEN = qualify.IS_OPEN ? 1 : 0;
+					qualify.NAME = "Qualify";
+
+					if(!isValidNum(qualify.QUALIFY_MAX_WAIT_PERC)) {
+						delete qualify.QUALIFY_MAX_WAIT_PERC;
+					}
 				}
-				delete $scope.qualify.ENABLED;
-				$scope.qualify.NAME = "Qualify";
-				QualifyService.SaveQualifyDetails($scope.qualify, function(result) {
+				delete qualify.ENABLED;
+				QualifyService.SaveQualifyDetails(qualify, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+
+				var race = angular.copy($scope.race);
+				if(!race.ENABLED) {
+					race = {};
+				}
+				else {
+					race.NAME = "Race";
+
+					if(!isValidNum(race.LAPS)) {
+						delete race.LAPS;
+					}
+					if(!isValidNum(race.WAIT_TIME)) {
+						delete race.WAIT_TIME;
+					}
+					if(!isValidNum(race.TIME)) {
+						delete race.TIME;
+					}
+
+				}
+				delete race.ENABLED;
+				RaceService.SaveRaceDetails(race, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
 
 
-				if(!$scope.race.ENABLED) {
-					$scope.race = {};
+				var weather = angular.copy($scope.weather);
+				if(!isValidNum(weather.WIND_BASE_SPEED_MIN)) {
+					delete weather.WIND_BASE_SPEED_MIN;
 				}
-				delete $scope.qualify.ENABLED;
-				$scope.qualify.NAME = "Race";
-				RaceService.SaveRaceDetails($scope.race, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
 
+				if(!isValidNum(weather.WIND_BASE_SPEED_MAX)) {
+					delete weather.WIND_BASE_SPEED_MAX;
+				}
 
+				if(!isValidNum(weather.WIND_BASE_DIRECTION)) {
+					delete weather.WIND_BASE_DIRECTION;
+				}
 
-				WeatherService.SaveWeather([$scope.weather], function(result) {
+				if(!isValidNum(weather.WIND_VARIATION_DIRECTION)) {
+					delete weather.WIND_VARIATION_DIRECTION;
+				}
+
+				WeatherService.SaveWeather([weather], function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}

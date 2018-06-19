@@ -928,11 +928,11 @@ app.get('/api/acserver/status/:logLen', function (req, res) {
 				publicip = ip;
 			}).finally(e => {
 			  res.status(200);
-			  res.send({ status: acServerStatus, ip: publicip, log: log });
+			  res.send({ status: acServerStatus, ip: publicip, log: log, pid: acServerPid });
 			});
 		} else {
 			res.status(200);
-			res.send({ status: acServerStatus, ip: publicip, log: log });
+			res.send({ status: acServerStatus, ip: publicip, log: log, pid: acServerPid });
 		}
 
 	} catch (e) {
@@ -944,8 +944,9 @@ app.get('/api/acserver/status/:logLen', function (req, res) {
 
 // start acserver process
 app.post('/api/acserver', function (req, res) {
+	acServerStatus = 1;
 	ac: try {
-		if(acServerStatus) {
+		if(acServerPid) {
 			console.log("acServer already running. Nothing to do here");
 			break ac;
 		}
@@ -975,6 +976,7 @@ app.post('/api/acserver', function (req, res) {
 					acServerStatus = -1;
 				}
 
+				// todo: concat is fine for now, but will get miserable once logs becomes bigger
 				var dataString = String(data);
 				acServerCurLog += dataString;
 
@@ -1034,8 +1036,9 @@ app.post('/api/acserver/stop', function (req, res) {
 				childProcess.spawn("kill", [acServerPid]);
 			}
 
-			acServerPid = undefined;
+			acServerPid = false;
 			acServerLogName = undefined;
+			acServerCurLog = "";
 		}
 
 		acServerStatus = 0;

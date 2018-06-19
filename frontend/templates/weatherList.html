@@ -43,13 +43,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label>Base Ambient Temp</label>
-					<input class="form-control" type="number" min="0" max="45" string-to-number name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" />
+					<input class="form-control" type="number" min="0" max="45" name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" />
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Ambient Variation</label>
-					<input class="form-control" type="number" min="-32768" max="32767" string-to-number name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" />
+					<input class="form-control" type="number" min="-32768" max="32767" name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" />
 				</div>
 			</div>
 		</div>
@@ -58,13 +58,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label>Base Road Temp</label>
-					<input class="form-control" type="number" min="-15" max="15" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" />
+					<input class="form-control" type="number" min="-15" max="15" name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" />
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Road Variation</label>
-					<input class="form-control" type="number" min="-32768" max="32767" string-to-number name="road_variation" ng-model="weather.VARIATION_ROAD" />
+					<input class="form-control" type="number" min="-32768" max="32767" name="road_variation" ng-model="weather.VARIATION_ROAD" />
 				</div>
 			</div>
 		</div>
@@ -79,14 +79,14 @@
 				<div class="form-group">
 					<label>Base Wind Speed (min)</label>
 					<!-- todo: cant be higher than max, and vice versa -->
-					<input class="form-control" type="number" min="0" max="40" string-to-number name="wind_base_speed_min" ng-model="weather.WIND_BASE_SPEED_MIN" />
+					<input class="form-control" type="number" min="0" max="40" name="wind_base_speed_min" ng-model="weather.WIND_BASE_SPEED_MIN" />
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Base Wind Speed (max)</label>
 					<!-- todo: cant be lower than min, and vice versa -->
-					<input class="form-control" type="number" min="0" max="40" string-to-number name="wind_base_speed_max" ng-model="weather.WIND_BASE_SPEED_MAX" />
+					<input class="form-control" type="number" min="0" max="40" name="wind_base_speed_max" ng-model="weather.WIND_BASE_SPEED_MAX" />
 				</div>
 			</div>
 		</div>
@@ -95,13 +95,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label>Wind Direction</label>
-					<input class="form-control" type="number" min="0" max="359" string-to-number name="wind_base_speed" ng-model="weather.WIND_BASE_DIRECTION" />
+					<input class="form-control" type="number" min="0" max="359" name="wind_base_speed" ng-model="weather.WIND_BASE_DIRECTION" />
 				</div>
 			</div>
 			<div class="col-sm-2 col-sm-offset-1">
 				<div class="form-group">
 					<label>Wind Direction Variation</label>
-					<input class="form-control" type="number" min="0" max="359" string-to-number name="wind_variation" ng-model="weather.WIND_VARIATION_DIRECTION" />
+					<input class="form-control" type="number" min="0" max="359" name="wind_variation" ng-model="weather.WIND_VARIATION_DIRECTION" />
 				</div>
 			</div>
 		</div>

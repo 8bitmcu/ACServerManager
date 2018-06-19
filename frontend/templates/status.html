@@ -2,10 +2,6 @@
 
 	<div class="col-sm-5">
 
-		<fieldset ng-show="serverIp.length">
-			<legend><span style="margin-right: 5em">Server IP:</span>{{serverIp}}</legend>
-		</fieldset>
-
 		<fieldset>
 			<legend>Assetto Corsa Server</legend>
 
@@ -15,20 +11,19 @@
 				</div>
 
 				<div class="col-sm-3">
-					<button type="button" class="btn btn-success btn-sm" ng-show="acServerStatus === 0" ng-click="startACServer()">
+					<button type="button" class="btn btn-success btn-sm" ng-show="!pid" ng-click="startACServer()">
 						<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 					</button>
 
 					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="restartACServer()">
+						<button type="button" class="btn btn-danger btn-sm" ng-show="pid > 0" ng-click="restartACServer()">
 							<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
 						</button>
 
-						<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="stopACServer()">
+						<button type="button" class="btn btn-danger btn-sm" ng-show="pid > 0" ng-click="stopACServer()">
 							<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
 						</button>
 					</div>
-					<img src="img/ajax-loader.gif" alt="Loading" ng-show="acServerStatus === -1" />
 				</div>
 			</div>
 		</fieldset>
@@ -58,6 +53,14 @@
 					<img src="img/ajax-loader.gif" alt="Loading" ng-show="sTrackerServerStatus === -1" />
 				</div>
 			</div>
+		</fieldset>
+
+		<fieldset ng-show="serverIp.length">
+			<legend>Server IP:<span class="right">{{serverIp}}</span></legend>
+		</fieldset>
+
+		<fieldset ng-show="pid > 0">
+			<legend>Server PID:<span class="right">{{pid}}</span></legend>
 		</fieldset>
 
 		<fieldset ng-show="acServerStatus === 1">
